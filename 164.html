@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>Welcome to the AIP Newsletter</title>
+    <title>AIP-164: Soft delete</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -20,6 +20,8 @@
     </script>
     <script type="text/javascript" src="/assets/js/global.js?v=f8e7fff6"></script>
     
+<script type="text/javascript" src="/assets/js/syntax.js"></script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -164,7 +166,8 @@
     <div class="glue-page">
       
       <main role="main" id="page-content">
-        <nav id="aip-nav" class="docs-component-nav">
+        
+<nav id="aip-nav" class="docs-component-nav">
   <ul class="nav-list">
     <li class="nav-item nav-item-header">AIPs by Scope</li>
     <li class="nav-item">
@@ -420,7 +423,7 @@
         Change validation
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/164">
         <span class="aip-number">164</span>
         Soft delete
@@ -551,19 +554,28 @@
 <section id="jump-content">
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
+  <table id="aip-summary">
+    <tr><th colspan="2">Soft delete</th></tr>
+    <tr><td>Number</td><td>164</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/164">google.aip.dev/164</a></td></tr>
+    <tr><td>State</td><td>Reviewing</td></tr>
+    <tr><td>Created</td><td>2020-10-06</td></tr>
+    <tr><td>Updated</td><td>2020-10-06</td></tr>
+  </table>
+
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#api-linter">API linter</a></li>
-<li><a href="#aips-under-review">AIPs under review</a><ul>
-<li><a href="#aip-153-import-and-export">AIP-153: Import and export</a></li>
-<li><a href="#aip-162-resource-revisions">AIP-162: Resource revisions</a></li>
-<li><a href="#aip-163-change-validation">AIP-163: Change validation</a></li>
-<li><a href="#aip-165-criteria-based-delete">AIP-165: Criteria-based delete</a></li>
-<li><a href="#aip-194-retries-for-grpc-clients">AIP-194: Retries for gRPC clients</a></li>
+<li><a href="#guidance">Guidance</a><ul>
+<li><a href="#undelete">Undelete</a></li>
+<li><a href="#undelete-request-message">Undelete request message</a></li>
+<li><a href="#long-running-undelete">Long-running undelete</a></li>
+<li><a href="#list-and-get">List and Get</a></li>
+<li><a href="#declarative-friendly-resources">Declarative-friendly resources</a></li>
+<li><a href="#errors">Errors</a></li>
 </ul>
 </li>
-<li><a href="#recent-updates">Recent updates</a></li>
-<li><a href="#what-is-coming">What is coming?</a></li>
+<li><a href="#further-reading">Further reading</a></li>
+<li><a href="#changelog">Changelog</a></li>
 </ul>
 </div>
 
@@ -572,8 +584,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/pages/news/2020-03.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/pages/news/2020-03.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0164.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0164.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -590,146 +602,155 @@
         </a>
       </li>
       
+      <li class="glue-breadcrumbs__item" aria-level="2">
+        <a class="glue-breadcrumbs__link" href="/general">
+          General AIPs
+        </a>
+      </li>
+      
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Welcome to the AIP Newsletter
+        Soft delete
       </li>
     </ol>
   </nav>
 </section>
-  <h1>Welcome to the AIP Newsletter</h1>
-<p>Welcome to the first (hopefully monthly) edition of the <strong>AIP newsletter</strong>,
-which is designed to keep you up to date about the AIP program, and particular
-proposals making their way through the system.</p>
-<p>In this edition, we will discuss five pending proposals. This is intended as a
-"public comment" period: the AIP editors are happy with these proposals, but we
-want to ensure that you are too. Assuming feedback is sufficiently positive, we
-intend to formally approve these proposals on Friday, March 27, 2020.</p>
-<h2 id="api-linter">API linter</h2>
-<p>As many readers know, we have published an <a href="https://github.com/api-linter">API linter</a>, which is able to
-check much of the guidance provided in API Improvement Proposals for APIs
-defined in protocol buffers.</p>
-<p>The linter now has over 150 rules, and is running on many new and existing APIs
-at Google, hopefully pushing us toward greater consistency.</p>
-<h2 id="aips-under-review">AIPs under review</h2>
-<h3 id="aip-153-import-and-export">AIP-153: Import and export</h3>
-<blockquote>
-<p>Many users want to be able to load data into an API, or get their existing
-data out of an API. This is particularly important for enterprise users, who
-are often concerned about vendor lock.</p>
-</blockquote>
-<p><a href="../153">Import and export</a> are particularly important concepts for enterprise
-APIs, although they are increasing in importance for consumer and SaaS APIs as
-well.</p>
-<p>We have actually had a reasonably consistent import and export story in Google
-Cloud for a long time, but it has largely been passed along by tribal knowledge
-("go look at X and copy what they did"). Therefore, this AIP attempts to codify
-what we believe is a long-standing practice.</p>
-<p><strong>Summary:</strong> <a href="../153">AIP-153</a> mandates that both import and export methods return
-<a href="../151">long-running operations</a>. Unlike most API methods, they do support
-partial failures, which are handled through the LRO metadata. Finally, they
-have a specified place for per-source and per-destination configuration,
-distinct from configuration for the data itself.</p>
-<p>We are aiming to approve AIP-153 on March 27. If you have feedback, please
-<a href="https://github.com/aip-dev/google.aip.dev/pull/422">leave a comment</a>.</p>
-<h3 id="aip-162-resource-revisions">AIP-162: Resource revisions</h3>
-<blockquote>
-<p>Some APIs need to have resources with a revision history, where users can
-reason about the state of the resource over time.</p>
-</blockquote>
-<p><a href="../162">Resource revisions</a> is a concept we are seeing crop up more and more,
-and we are seeing an increasing number of situations where audit logging is a
-necessary but insufficient solution. Several APIs have struggled with how to
-model a resource's history over time, and handle common use cases like commit
-and rollback, which is what prompted this AIP.</p>
-<p>This is new guidance, put together by the AIP team as well as several API teams
-who needed this functionality near the end of 2019. It has been positively
-received by the teams that needed it, and so we would like to codify it.</p>
-<p><strong>Summary:</strong> <a href="../162">AIP-162</a> mandates the use of revision IDs that are appended to
-a resource name with the <code>@</code> character for signifying revisions, and sets out
-method structures for most common operations (listing revisions, rollback,
-etc.). It also proposes a tagging mechanism for user-friendly revision names.</p>
-<p>We are aiming to approve AIP-162 on March 27. If you have feedback, please
-<a href="https://github.com/aip-dev/google.aip.dev/pull/436">leave a comment</a>.</p>
-<h3 id="aip-163-change-validation">AIP-163: Change validation</h3>
-<blockquote>
-<p>Occasionally, a user wants to validate an intended change to see what the
-result will be before actually making the change. For example, a request to
-provision new servers in a fleet will have an impact on the overall fleet
-size and cost, and could potentially have unexpected downstream effects.</p>
-</blockquote>
-<p><a href="../163">Change validation</a> is the concept of performing a "dry run" on an API
-request, and returning back the result without making any changes.</p>
-<p>This is effectively a migration of long-standing guidance that was not very
-fleshed out. The previous API design guide mentioned <code>validate_only</code> as an
-entry in the standard fields table with minimal explanation. This proposal
-fleshes that out with an example, and addresses some questions we have received
-over time.</p>
-<p><strong>Summary:</strong> <a href="../163">AIP-163</a> offers guidance for "dry run" requests using a
-<code>bool validate_only</code> field in the request message, and addresses some common
-situations around permissions and incomplete output.</p>
-<p>We are aiming to approve AIP-163 on March 27. If you have feedback, please
-<a href="https://github.com/aip-dev/google.aip.dev/pull/437">leave a comment</a>.</p>
-<h3 id="aip-165-criteria-based-delete">AIP-165: Criteria-based delete</h3>
-<blockquote>
-<p>Occasionally, an API may need to provide a mechanism to delete a large number
-of resources based on some set of filter parameters, rather than requiring
-the individual resource name of the resources to be deleted.</p>
-</blockquote>
-<p><a href="../165">Criteria-based delete</a> is designed to address problems where a user
-needs to delete so many items that <a href="../235">batch delete</a> simply becomes
-infeasible.</p>
-<p>This proposal represents a concession of sorts: we have long tried to avoid
-delete-by-filter because of concerns that users would accidentally delete
-important records and be unable to recover them. However, several APIs have had
-legitimate reasons to need to do this, because the number of records the user
-would want to delete was so high.</p>
-<p><strong>Summary:</strong> <a href="../165">AIP-165</a> offers guidance for criteria-based delete, with a
-common name (<code>Purge</code>) and structure, and mandates a dry-run by default with a
-<code>force</code> flag to actually perform the purge.</p>
-<p>We are aiming to approve AIP-165 on March 27. If you have feedback, please
-<a href="https://github.com/aip-dev/google.aip.dev/pull/438">leave a comment</a>.</p>
-<h3 id="aip-194-retries-for-grpc-clients">AIP-194: Retries for gRPC clients</h3>
-<blockquote>
-<p>RPCs sometimes fail. When one does, the client performing the RPC needs to
-know whether it is safe to retry the operation. When status codes are used
-consistently across multiple APIs, clients can respond to failures
-appropriately.</p>
-</blockquote>
-<p><a href="../194">Retries for gRPC clients</a> handles how to deal with errors, and in
-particular when a client can transparently retry those errors.</p>
-<p>This proposal came about because of a need for first-party client libraries to
-be able to transparently retry some server errors. gRPC offers a configuration
-strategy for this, which is defined by API producers.</p>
-<p><strong>Summary:</strong> <a href="../194">AIP-194</a> offers guidance for configuring what error codes from
-an API are safe to retry. It recommends usually retrying <code>UNAVAILABLE</code> and
-nothing else.</p>
-<p>We are aiming to approve AIP-194 on March 27. If you have feedback, please
-<a href="https://github.com/aip-dev/google.aip.dev/pull/439">leave a comment</a>.</p>
-<h2 id="recent-updates">Recent updates</h2>
-<p>In addition to the new AIPs under review, we have added the following guidance
-to existing AIPs:</p>
-<ul>
-<li><a href="../8">AIP-8</a>: AIPs have reverse-chronological changelogs
-  (<a href="https://github.com/aip-dev/google.aip.dev/pull/425">#425</a>)</li>
-<li><a href="../135">AIP-135</a>: Delete methods send 403 errors if the user lacks access
-  (<a href="https://github.com/aip-dev/google.aip.dev/pull/409">#409</a>)</li>
-<li><a href="../140">AIP-140</a>: <code>display_name</code> and <code>title</code> standard fields
-  (<a href="https://github.com/aip-dev/google.aip.dev/pull/405">#405</a>)</li>
-<li><a href="../158">AIP-158</a>: Field order for pagination response messages
-  (<a href="https://github.com/aip-dev/google.aip.dev/pull/419">#419</a>)</li>
-<li><a href="../193">AIP-193</a>: Added reference to new <code>ErrorInfo</code> message
-  (<a href="https://github.com/aip-dev/google.aip.dev/pull/396">#396</a>)</li>
-</ul>
-<h2 id="what-is-coming">What is coming?</h2>
-<p>We have more coming over the course of the next few months, including
-long-awaited public guidance for filtering and versioning.</p>
-<p>You also may notice some pull requests around making AIPs more generic. We are
-exploring the possibility of bringing AIPs to even more API producers across
-multiple companies, so that others can publish their standards under a common
-information architecture. This effort is still nascent, but we are excited and
-hopeful. Stay tuned!</p>
+  <p id="aip-state-banner" class="callout note">
+  This AIP is currently under review. This means that the editors have read it
+  and are in high-level concurrence, and while it is not yet fully approved, we
+  have a good faith expectation that the AIP will be approved in something
+  close to its current state.
+</p>
+  <h4 class="aip-number">AIP-164</h4>
+  <h1>Soft delete</h1>
+<p>There are several reasons why a client could desire soft delete and undelete
+functionality, but one over-arching reason stands out: recovery from mistakes.
+A service that supports undelete makes it possible for users to recover
+resources that were deleted by accident.</p>
+<h2 id="guidance">Guidance</h2>
+<p>APIs <strong>may</strong> support the ability to "undelete", to allow for situations where
+users mistakenly delete resources and need the ability to recover.</p>
+<p>If a resource needs to support undelete, the <code>Delete</code> method <strong>must</strong> simply
+mark the resource as having been deleted, but not completely remove it from the
+system. If the method behaves this way, it <strong>should</strong> return the updated
+resource instead of <code>google.protobuf.Empty</code>.</p>
+<p>Resources that support soft delete <strong>must</strong> have an <code>expire_time</code> field as
+described in <a href="/148">AIP-148</a>. Additionally, resources <strong>should</strong> include a <code>DELETED</code>
+state value if the resource includes a <code>state</code> field (<a href="/216">AIP-216</a>).</p>
+<h3 id="undelete">Undelete</h3>
+<p>A resource that supports soft delete <strong>should</strong> provide an <code>Undelete</code> method:</p>
+<div class="highlight language-proto"><pre><span></span><code><span class="k">rpc</span> <span class="n">UndeleteBook</span><span class="p">(</span><span class="n">UndeleteBookRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">Book</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:undelete&quot;</span>
+    <span class="n">body</span><span class="o">:</span> <span class="s">&quot;*&quot;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
 
+<ul>
+<li>The HTTP verb <strong>must</strong> be <code>POST</code>.</li>
+<li>The <code>body</code> clause <strong>must</strong> be <code>"*"</code>.</li>
+<li>The response message <strong>must</strong> be the resource itself. There is no
+  <code>UndeleteBookResponse</code>.<ul>
+<li>The response <strong>should</strong> include the fully-populated resource unless it is
+  infeasible to do so.</li>
+<li>If the undelete RPC is <a href="#long-running-undelete">long-running</a>, the response
+  message <strong>must</strong> be a <code>google.longrunning.Operation</code> which resolves to the
+  resource itself.</li>
+</ul>
+</li>
+</ul>
+<h3 id="undelete-request-message">Undelete request message</h3>
+<p>Undelete methods implement a common request message pattern:</p>
+<div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">UndeleteBookRequest</span> <span class="p">{</span>
+  <span class="c1">// The name of the deleted book.</span>
+  <span class="c1">// Format: publishers/{publisher}/books/{book}</span>
+  <span class="kt">string</span> <span class="na">name</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">google.api.resource_reference</span><span class="p">)</span><span class="o">.</span><span class="na">type</span> <span class="o">=</span> <span class="s">&quot;library.googleapis.com/Book&quot;</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>A <code>name</code> field <strong>must</strong> be included. It <strong>should</strong> be called <code>name</code>.<ul>
+<li>The field <strong>should</strong> be annotated as required.</li>
+<li>The field <strong>should</strong> identify the <a href="/123">resource type</a> that it
+  references.</li>
+<li>The comment for the field <strong>should</strong> document the resource pattern.</li>
+</ul>
+</li>
+<li>The request message <strong>must not</strong> contain any other required fields, and
+  <strong>should not</strong> contain other optional fields except those described in this
+  or another AIP.</li>
+</ul>
+<h3 id="long-running-undelete">Long-running undelete</h3>
+<p>Some resources take longer to undelete a resource than is reasonable for a
+regular API request. In this situation, the API <strong>should</strong> use a long-running
+operation (<a href="/151">AIP-151</a>) instead:</p>
+<div class="highlight language-proto"><pre><span></span><code><span class="k">rpc</span> <span class="n">UndeleteBook</span><span class="p">(</span><span class="n">UndeleteBookRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">google.longrunning.Operation</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:undelete&quot;</span>
+    <span class="n">body</span><span class="o">:</span> <span class="s">&quot;*&quot;</span>
+  <span class="p">};</span>
+  <span class="k">option</span> <span class="p">(</span><span class="n">google.longrunning.operation_info</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">response_type</span><span class="o">:</span> <span class="s">&quot;Book&quot;</span>
+    <span class="n">metadata_type</span><span class="o">:</span> <span class="s">&quot;OperationMetadata&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>The response type <strong>must</strong> be set to the resource (what the return type would
+  be if the RPC was not long-running).</li>
+<li>Both the <code>response_type</code> and <code>metadata_type</code> fields <strong>must</strong> be specified.</li>
+</ul>
+<h3 id="list-and-get">List and Get</h3>
+<p>Soft-deleted resources <strong>should not</strong> be returned in <code>List</code> (<a href="/132">AIP-132</a>) responses
+by default (unless <code>bool show_deleted</code> is true). <code>Get</code> (<a href="/131">AIP-131</a>) requests for
+soft-deleted resources <strong>should</strong> return the resource (rather than a
+<code>NOT_FOUND</code> error).</p>
+<p>APIs that soft delete resources <strong>may</strong> choose a reasonable strategy for
+purging those resources, including automatic purging after a reasonable time
+(such as 30 days), allowing users to set an expiry time (<a href="/214">AIP-214</a>), or retaining
+the resources indefinitely. Regardless of what strategy is selected, the API
+<strong>should</strong> document when soft deleted resources will be completely removed.</p>
+<h3 id="declarative-friendly-resources">Declarative-friendly resources</h3>
+<p>A resource that is declarative-friendly (<a href="/128">AIP-128</a>) <strong>should</strong> support soft
+delete and undelete.</p>
+<p><strong>Important:</strong> There is an ambiguity in declarative tooling between "create"
+and "undelete". When given an alias which was previously deleted and a
+directive to make it exist, tooling usually does not know if the intent is to
+restore the previously-deleted resource, or create a new one with the same
+alias. Declarative tools <strong>should</strong> resolve this ambiguity in favor of creating
+a new resource: the only way to undelete is to explicitly use the undelete RPC
+(an imperative operation), and declarative tools <strong>may</strong> elect not to map
+anything to undelete at all.</p>
+<p>Declarative-friendly resources <strong>must</strong> use long-running operations for both
+soft delete and undelete. The service <strong>may</strong> return an LRO that is already set
+to done if the request is effectively immediate.</p>
+<p>Declarative-friendly resources <strong>must</strong> include <code>validate_only</code> (<a href="/163">AIP-163</a>) and
+<code>etag</code> (<a href="/154">AIP-154</a>) in their <code>Undelete</code> methods.</p>
+<h3 id="errors">Errors</h3>
+<p>If the user does not have permission to access the resource, regardless of
+whether or not it exists, the service <strong>must</strong> error with <code>PERMISSION_DENIED</code>
+(HTTP 403). Permission <strong>must</strong> be checked prior to checking if the resource
+exists.</p>
+<p>If the user does have proper permission, but the requested resource does not
+exist (either it was never created or already expunged), the service <strong>must</strong>
+error with <code>NOT_FOUND</code> (HTTP 404).</p>
+<p>If the user has proper permission, but the requested resource is not deleted,
+the service <strong>must</strong> respond with <code>ALREADY_EXISTS</code> (HTTP 409).</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>For the <code>Delete</code> standard method, see <a href="/135">AIP-135</a>.</li>
+<li>For long-running operations, see <a href="/151">AIP-151</a>.</li>
+<li>For resource freshness validation (<code>etag</code>), see <a href="/154">AIP-154</a>.</li>
+<li>For change validation (<code>validate_only</code>), see <a href="/163">AIP-163</a>.</li>
+</ul>
+<h2 id="changelog">Changelog</h2>
+<ul>
+<li><strong>2020-09-23</strong>: Soft delete material in <a href="/135">AIP-135</a> migrated to this AIP.</li>
+</ul>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
@@ -738,7 +759,7 @@ hopeful. Stay tuned!</p>
   <span class="no-print">For details, see <a href="/licensing">content
   licensing</a>.</span>
 </footer>
-  </section>
+</section>
 
         </section>
       </main>
