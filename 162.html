@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=f8e7fff6">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=f8e7fff6">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=aa8267a7">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=aa8267a7">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,7 +18,7 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=f8e7fff6"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=aa8267a7"></script>
     
 <script type="text/javascript" src="/assets/js/syntax.js"></script>
 
@@ -654,7 +654,6 @@ to the version of an API as a whole.</p>
     <span class="p">[(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">OUTPUT_ONLY</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The resource <strong>must</strong> contain a <code>revision_id</code> field, which <strong>should</strong> be a
   string and contain a short, automatically-generated random string. A good
@@ -704,7 +703,6 @@ revision ID in the standard <code>Get</code> method (<a href="/131">AIP-131</a>)
     <span class="p">}];</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>If the user passes a revision ID that does not exist, the API <strong>must</strong> fail
 with a <code>NOT_FOUND</code> error.</p>
 <p>APIs <strong>must</strong> return a <code>name</code> value corresponding to what the user sent. If the
@@ -719,10 +717,9 @@ Revision" custom method:</p>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:tagRevision&quot;</span>
     <span class="n">body</span><span class="o">:</span> <span class="s">&quot;*&quot;</span>
-  <span class="p">}</span>
+  <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">TagBookRevisionRequest</span> <span class="p">{</span>
   <span class="c1">// The name of the book to be tagged, including the revision ID.</span>
   <span class="kt">string</span> <span class="na">name</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">[</span>
@@ -736,15 +733,14 @@ Revision" custom method:</p>
   <span class="kt">string</span> <span class="na">tag</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">[(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The <code>name</code> field <strong>should</strong> require an explicit revision ID to be provided.<ul>
-<li>The field <strong>should</strong> be annotated as required.</li>
+<li>The field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
 <li>The field <strong>should</strong> identify the <a href="/123">resource type</a> that it
   references.</li>
 </ul>
 </li>
-<li>The <code>tag</code> field <strong>should</strong> be annotated as required.</li>
+<li>The <code>tag</code> field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
 <li>Once a revision is tagged, the API <strong>must</strong> support using the tag in place of
   the revision ID in <code>name</code> fields.<ul>
 <li>If the user sends a tag, the API <strong>must</strong> return the tag in the resource's
@@ -766,10 +762,9 @@ standard <code>List</code> methods (<a href="/132">AIP-132</a>):</p>
     <span class="k">returns</span> <span class="p">(</span><span class="n">ListBookRevisionsResponse</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">get</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:listRevisions&quot;</span>
-  <span class="p">}</span>
+  <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">ListBookRevisionsRequest</span> <span class="p">{</span>
   <span class="c1">// The name of the book to list revisions for.</span>
   <span class="kt">string</span> <span class="na">name</span> <span class="o">=</span> <span class="mi">1</span> <span class="p">[</span>
@@ -795,7 +790,6 @@ standard <code>List</code> methods (<a href="/132">AIP-132</a>):</p>
   <span class="kt">string</span> <span class="na">next_page_token</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <p>While revision listing methods are mostly similar to standard <code>List</code> methods
 (<a href="/132">AIP-132</a>), the following important differences apply:</p>
 <ul>
@@ -853,7 +847,7 @@ on user request <strong>should</strong> handle this with a <code>Commit</code> c
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:commit&quot;</span>
     <span class="n">body</span><span class="o">:</span> <span class="s">&quot;*&quot;</span>
-  <span class="p">}</span>
+  <span class="p">};</span>
 <span class="p">}</span>
 
 <span class="kd">message</span> <span class="nc">CommitBookRequest</span> <span class="p">{</span>
@@ -864,13 +858,12 @@ on user request <strong>should</strong> handle this with a <code>Commit</code> c
     <span class="p">}];</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The method <strong>must</strong> use the <code>POST</code> HTTP verb.</li>
 <li>The method <strong>should</strong> return the resource, and the resource name <strong>must</strong>
   include the revision ID.</li>
 <li>The request message <strong>must</strong> include the <code>name</code> field.<ul>
-<li>The field <strong>should</strong> be annotated as required.</li>
+<li>The field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
 <li>The field <strong>should</strong> identify the <a href="/123">resource type</a> that it
   references.</li>
 </ul>
@@ -884,10 +877,9 @@ method:</p>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">post</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:rollback&quot;</span>
     <span class="n">body</span><span class="o">:</span> <span class="s">&quot;*&quot;</span>
-  <span class="p">}</span>
+  <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The method <strong>must</strong> use the <code>POST</code> HTTP verb.</li>
 <li>The method <strong>should</strong> return the resource, and the resource name <strong>must</strong>
@@ -908,11 +900,10 @@ method:</p>
   <span class="kt">string</span> <span class="na">revision_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">[(</span><span class="n">google.api.field_behavior</span><span class="p">)</span> <span class="o">=</span> <span class="n">REQUIRED</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The request message <strong>must</strong> have a <code>name</code> field to identify the resource
   being rolled back.<ul>
-<li>The field <strong>should</strong> be annotated as required.</li>
+<li>The field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
 <li>The field <strong>should</strong> identify the <a href="/123">resource type</a> that it
   references.</li>
 </ul>
@@ -920,7 +911,7 @@ method:</p>
 <li>The request message <strong>must</strong> include a <code>revision_id</code> field.<ul>
 <li>The API <strong>must</strong> fail the request with <code>NOT_FOUND</code> if the revision does not
   exist on that resource.</li>
-<li>The field <strong>should</strong> be annotated as required.</li>
+<li>The field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
 </ul>
 </li>
 </ul>
@@ -937,10 +928,9 @@ want to remove one or more revisions from a resource's revision history.</p>
     <span class="k">returns</span> <span class="p">(</span><span class="n">google.protobuf.Empty</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">delete</span><span class="o">:</span> <span class="s">&quot;/v1/{name=publishers/*/books/*}:deleteRevision&quot;</span>
-  <span class="p">}</span>
+  <span class="p">};</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <div class="highlight language-proto"><pre><span></span><code><span class="kd">message</span> <span class="nc">DeleteBookRevisionRequest</span> <span class="p">{</span>
   <span class="c1">// The name of the book revision to be deleted, with a revision ID explicitly</span>
   <span class="c1">// included.</span>
@@ -953,14 +943,13 @@ want to remove one or more revisions from a resource's revision history.</p>
     <span class="p">}];</span>
 <span class="p">}</span>
 </code></pre></div>
-
 <ul>
 <li>The request message <strong>must</strong> have a <code>name</code> field to identify the resource
   revision being deleted.<ul>
 <li>The explicit resource ID <strong>must</strong> be required (the method <strong>must</strong> fail with
   <code>INVALID_ARGUMENT</code> if it is not provided, and <strong>must not</strong> default to the
   latest revision).</li>
-<li>The field <strong>should</strong> be annotated as required.</li>
+<li>The field <strong>should</strong> be <a href="/203">annotated as required</a>.</li>
 <li>The field <strong>should</strong> identify the <a href="/123">resource type</a> that it
   references.</li>
 </ul>
