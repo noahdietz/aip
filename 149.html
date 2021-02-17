@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-193: Errors</title>
+    <title>AIP-149: Unset field values</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -351,7 +351,7 @@
         Standard fields
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/149">
         <span class="aip-number">149</span>
         Unset field values
@@ -465,7 +465,7 @@
         Documentation
       </a>
     </li>
-    <li class="nav-item nav-item-active">
+    <li class="nav-item">
       <a href="/193">
         <span class="aip-number">193</span>
         Errors
@@ -561,24 +561,17 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Errors</th></tr>
-    <tr><td>Number</td><td>193</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/193">google.aip.dev/193</a></td></tr>
-    <tr><td>State</td><td>Approved</td></tr>
-    <tr><td>Created</td><td>2019-07-26</td></tr>
-    <tr><td>Updated</td><td>2019-07-26</td></tr>
+    <tr><th colspan="2">Unset field values</th></tr>
+    <tr><td>Number</td><td>149</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/149">google.aip.dev/149</a></td></tr>
+    <tr><td>State</td><td>Reviewing</td></tr>
+    <tr><td>Created</td><td>2021-02-12</td></tr>
+    <tr><td>Updated</td><td>2021-02-12</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#guidance">Guidance</a><ul>
-<li><a href="#details">Details</a></li>
-<li><a href="#localization">Localization</a></li>
-<li><a href="#partial-errors">Partial errors</a></li>
-</ul>
-</li>
-<li><a href="#further-reading">Further reading</a></li>
-<li><a href="#changelog">Changelog</a></li>
+<li><a href="#guidance">Guidance</a></li>
 </ul>
 </div>
 
@@ -587,8 +580,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0193.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0193.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0149.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0149.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -613,73 +606,42 @@
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Errors
+        Unset field values
       </li>
     </ol>
   </nav>
 </section>
-  
-  <h4 class="aip-number">AIP-193</h4>
-  <h1>Errors</h1>
-<p>Error handling is an important part of designing simple and intuitive APIs.
-Consistent error handling allows developers to know how to expect to receive
-errors, and to reduce boilerplate by having common error-handling logic, rather
-than being expected to constantly add verbose error handling everywhere.</p>
+  <p id="aip-state-banner" class="callout note">
+  This AIP is currently under review. This means that the editors have read it
+  and are in high-level concurrence, and while it is not yet fully approved, we
+  have a good faith expectation that the AIP will be approved in something
+  close to its current state.
+</p>
+  <h4 class="aip-number">AIP-149</h4>
+  <h1>Unset field values</h1>
+<p>In many messages, many fields are optional: the user is not required to provide
+them, or for output fields, the service might not populate the field.</p>
+<p>In most cases, there is no meaningful difference between setting it to a
+default value (such as <code>0</code>) as opposed to not setting it at all; however,
+occasionally this distinction is meaningful.</p>
 <h2 id="guidance">Guidance</h2>
-<p>Services <strong>must</strong> return a <a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/status.proto"><code>google.rpc.Status</code></a> message when an API
-error occurs, and <strong>must</strong> use the canonical error codes defined in
-<a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/code.proto"><code>google.rpc.Code</code></a>. More information about the particular codes is
-available in the <a href="https://github.com/grpc/grpc/blob/master/doc/statuscodes.md">gRPC status code documentation</a>.</p>
-<p>Error messages <strong>should</strong> help a reasonably technical user <em>understand</em> and
-<em>resolve</em> the issue, and <strong>should not</strong> assume that the user is an expert in
-your particular API. Additionally, error messages <strong>must not</strong> assume that the
-user will know anything about its underlying implementation.</p>
-<p>Error messages <strong>should</strong> be brief but actionable. Any extra information
-<strong>should</strong> be provided in the <code>details</code> field. If even more information is
-necessary, you <strong>should</strong> provide a link where a reader can get more
-information or ask questions to help resolve the issue.</p>
-<h3 id="details">Details</h3>
-<p>Google defines a set of <a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/error_details.proto">standard detail payloads</a> for error details,
-which cover most common needs for API errors. Services <strong>should</strong> use these
-standard details payloads when feasible.</p>
-<p>Structured details with machine-readable identifiers <strong>must</strong> be used if users
-will need to write code against a specific aspect of the error. Error message
-strings <strong>may</strong> change over time; however, if an error message does not have a
-machine-readable identifier <em>in addition to</em> the <code>code</code> field, changing the
-error message <strong>must</strong> be considered a backwards-incompatible change.</p>
-<p><strong>Note:</strong> The <a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/error_details.proto#L111"><code>ErrorInfo</code></a> message is the recommended way to send a
-machine-readable identifier.</p>
-<h3 id="localization">Localization</h3>
-<p>Error messages <strong>must</strong> be in English. If a localized error message is also
-required, the service <strong>should</strong> use <a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/error_details.proto"><code>google.rpc.LocalizedMessage</code></a>
-as the <code>details</code> field.</p>
-<h3 id="partial-errors">Partial errors</h3>
-<p>APIs <strong>should not</strong> support partial errors. Partial errors add significant
-complexity for users, because they usually sidestep the use of error codes, or
-move those error codes into the response message, where the user must write
-specialized error handling logic to address the problem.</p>
-<p>However, occasionally partial errors are necessary, particularly in bulk
-operations where it would be hostile to users to fail an entire large request
-because of a problem with a single entry.</p>
-<p>Methods that require partial errors <strong>should</strong> use <a href="/151">long-running operations</a>,
-and the method <strong>should</strong> put partial failure information in the metadata
-message. The errors themselves <strong>must</strong> still be represented with a
-<a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/status.proto"><code>google.rpc.Status</code></a> object.</p>
-<h2 id="further-reading">Further reading</h2>
-<ul>
-<li>For which error codes to retry, see <a href="https://aip.dev/194">AIP-194</a>.</li>
-<li>For how to retry errors in client libraries, see <a href="./client-libraries/4221.md">AIP-4221</a>.</li>
-</ul>
-<h2 id="changelog">Changelog</h2>
-<ul>
-<li><strong>2020-01-22</strong>: Added a reference to the <a href="https://github.com/googleapis/api-common-protos/blob/master/google/rpc/error_details.proto#L111"><code>ErrorInfo</code></a> message.</li>
-<li><strong>2019-10-14</strong>: Added guidance restricting error message mutability to if
-  there is a machine-readable identifier present.</li>
-<li><strong>2019-09-23</strong>: Added guidance about error message strings being able to
-  change.</li>
-</ul>
-<!-- prettier-ignore-start -->
-<!-- prettier-ignore-end -->
+<p>Services defined in protocol buffers <strong>should</strong> use the <code>optional</code> keyword for
+primitives if and only if it is necessary to distinguish setting the field to
+its default value (<code>0</code>, <code>false</code>, or empty string) from not setting it at all:</p>
+<div class="highlight language-proto"><pre><span></span><code><span class="c1">// A representation of a book in a library.</span>
+<span class="kd">message</span> <span class="nc">Book</span> <span class="p">{</span>
+  <span class="c1">// The name of the book.</span>
+  <span class="kt">string</span> <span class="na">name</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="c1">// The rating for the book, from 0 to 5.</span>
+  <span class="c1">// 0 is distinct from no rating.</span>
+  <span class="k">optional</span> <span class="kt">int32</span> <span class="na">rating</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><strong>Important:</strong> Services <strong>should not</strong> need to distinguish between the default
+value and unset most of the time; if an alternative design does not require
+such a distinction, it is usually preferred. In practice, this means <code>optional</code>
+<strong>should</strong> only ever be used for integers and floats.</p>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
