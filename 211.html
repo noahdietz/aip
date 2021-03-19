@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-157: Partial responses</title>
+    <title>AIP-211: Authorization checks</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -393,7 +393,7 @@
         Singleton resources
       </a>
     </li>
-    <li class="nav-item nav-item-active">
+    <li class="nav-item">
       <a href="/157">
         <span class="aip-number">157</span>
         Partial responses
@@ -507,7 +507,7 @@
         Unicode
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/211">
         <span class="aip-number">211</span>
         Authorization checks
@@ -573,23 +573,20 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Partial responses</th></tr>
-    <tr><td>Number</td><td>157</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/157">google.aip.dev/157</a></td></tr>
-    <tr><td>State</td><td>Approved</td></tr>
-    <tr><td>Created</td><td>2019-01-26</td></tr>
-    <tr><td>Updated</td><td>2019-01-26</td></tr>
+    <tr><th colspan="2">Authorization checks</th></tr>
+    <tr><td>Number</td><td>211</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/211">google.aip.dev/211</a></td></tr>
+    <tr><td>State</td><td>Reviewing</td></tr>
+    <tr><td>Created</td><td>2021-02-24</td></tr>
+    <tr><td>Updated</td><td>2021-02-24</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#guidance">Guidance</a><ul>
-<li><a href="#view-enumeration">View enumeration</a></li>
-<li><a href="#read-masks">Read masks</a></li>
-<li><a href="#choosing-a-strategy">Choosing a strategy</a></li>
+<li><a href="#multiple-operations">Multiple operations</a></li>
 </ul>
 </li>
-<li><a href="#changelog">Changelog</a></li>
 </ul>
 </div>
 
@@ -598,8 +595,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0157.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0157.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0211.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0211.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -624,112 +621,62 @@
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Partial responses
+        Authorization checks
       </li>
     </ol>
   </nav>
 </section>
-  
-  <h4 class="aip-number">AIP-157</h4>
-  <h1>Partial responses</h1>
-<p>Sometimes, a resource can be either large or expensive to compute, and the API
-needs to give the user control over which fields it sends back.</p>
+  <p id="aip-state-banner" class="callout note">
+  This AIP is currently under review. This means that the editors have read it
+  and are in high-level concurrence, and while it is not yet fully approved, we
+  have a good faith expectation that the AIP will be approved in something
+  close to its current state.
+</p>
+  <h4 class="aip-number">AIP-211</h4>
+  <h1>Authorization checks</h1>
+<p>The majority of operations, whether reads or writes, require authorization:
+permission to do the thing the user is asking to do. Additionally, it is
+important to be careful how much information is provided to <em>unauthorized</em>
+users, since leaking information can be a security concern.</p>
 <h2 id="guidance">Guidance</h2>
-<p>APIs <strong>may</strong> support partial responses in one of two ways (but the same API
-<strong>must not</strong> use both):</p>
-<h3 id="view-enumeration">View enumeration</h3>
-<p>View enums are useful for situations where an API only wants to expose a small
-number of permutations to the user:</p>
-<div class="highlight language-proto"><pre><span></span><code><span class="kd">enum</span> <span class="n">BookView</span> <span class="p">{</span>
-  <span class="c1">// The default / unset value.</span>
-  <span class="c1">// The API will default to the BASIC view.</span>
-  <span class="na">BOOK_VIEW_UNSPECIFIED</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-
-  <span class="c1">// Include basic metadata about the book, but not the full contents.</span>
-  <span class="c1">// This is the default value (for both ListBooks and GetBook).</span>
-  <span class="na">BASIC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
-  <span class="c1">// Include everything.</span>
-  <span class="na">FULL</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+<p>Services <strong>must</strong> check authorization before validating any request, to ensure
+both a secure API surface and a consistent user experience. An operation
+<strong>may</strong> require multiple permissions or preconditions in order to grant
+authorization.</p>
+<p>If a request can not pass the authorization check for any reason, the service
+<strong>must</strong> error with <code>PERMISSION_DENIED</code>, and the corresponding error message
+<strong>should</strong> look like: "Permission <code>{p}</code> denied on resource <code>{r}</code> (or it might
+not exist)." This avoids leaking resource existence.</p>
+<p><strong>Note:</strong> This guidance conflicts with the guidance in the HTTP specification,
+which argues for the use of 404 in cases where the user lacks permission to
+know whether or not a resource exists. This variance is because of real-world
+challenges: the practice of "getting <code>NOT_FOUND</code> until you have enough
+permission to get <code>PERMISSION_DENIED</code>" is counter-intuitive and increases the
+difficulty of troubleshooting. Additionally, the guidance here is more
+consistent with most other real-world authorization systems.</p>
+<p>If it is not possible to determine authorization for a resource because the
+resource does not exist, the service <strong>should</strong> check authorization to read
+children on the parent resource, and return <code>NOT_FOUND</code> if the authorization
+check passes.</p>
+<h3 id="multiple-operations">Multiple operations</h3>
+<p>A service could encounter a situation where it has two different operations
+with two different permissions, either of which would reveal the existence of a
+resource if called, but a user only has permission to call one of them.</p>
+<p>In this situation, the service <strong>should</strong> still only check for authorization
+applicable to the operation being called, and <strong>should not</strong> try to "help out"
+by checking for related authorization that would provide permission to reveal
+existence, because such algorithms are complicated to implement correctly and
+prone to accidental leaks.</p>
+<p>For example, posit a scenario where:</p>
 <ul>
-<li>The enum <strong>should</strong> be specified as a <code>view</code> field on List/Get RPC requests.</li>
-<li>The enum <strong>should</strong> be named something ending in <code>-View</code></li>
-<li>The enum <strong>should</strong> at minimum have values named <code>BASIC</code> and <code>FULL</code> (although
-  it <strong>may</strong> have values other than these).</li>
-<li>The <code>UNSPECIFIED</code> value <strong>must</strong> be valid (not an error), and the API
-  <strong>must</strong> document what the unspecified value will do).<ul>
-<li>For List RPCs, the effective default value <strong>should</strong> be <code>BASIC</code>.</li>
-<li>For Get RPCs, the effective default value <strong>should</strong> be either <code>BASIC</code> or
-  <code>FULL</code>.</li>
+<li>A resource exists within a given collection that a user is unable to read.</li>
+<li>The user <em>does</em> have the ability to create other resources, and the
+  collection uses user-specified IDs (meaning that a failure because of a
+  duplicate ID would reveal existance).</li>
 </ul>
-</li>
-<li>The enum <strong>should</strong> be defined at the top level of the proto file (as it is
-  needed in both the Get and List request).</li>
-<li>
-<p>APIs <strong>may</strong> add fields to a given view over time. APIs <strong>must not</strong> remove a
-  field from a given view (this is a breaking change).</p>
-<p><strong>Note:</strong> If a service requires (or might require) multiple views with
-overlapping but distinct values, there is a potential for a namespace
-conflict. In this situation, the service <strong>should</strong> nest the view enum within
-the individual resource.</p>
-</li>
-</ul>
-<h3 id="read-masks">Read masks</h3>
-<p>Read masks are useful for granting the user fine-grained control over what
-fields are returned, and are specified as a single field on the request
-message: <code>google.protobuf.FieldMask read_mask</code>.</p>
-<ul>
-<li>The field mask <strong>must</strong> be a <code>google.protobuf.FieldMask</code> and <strong>should</strong> be
-  named <code>read_mask</code>.</li>
-<li>The field mask <strong>should</strong> be optional, and the API <strong>should</strong> provide and
-  document an appropriate default if the field mask is not provided.<ul>
-<li>An explicit value of <code>"*"</code> <strong>should</strong> be supported, and <strong>must</strong> return all
-  fields.</li>
-<li>The default value <strong>may</strong> be something other than <code>"*"</code> (for example, if
-  certain fields are expensive to compute and it is preferable to exclude
-  them by default).</li>
-<li>The field mask <strong>may</strong> be designated as required if necessary.</li>
-<li>The default for List and Get <strong>may</strong> be different from each other. However,
-  if they are, the default for Get <strong>must</strong> be a (non-strict) superset of the
-  default for List.</li>
-</ul>
-</li>
-<li>An API <strong>may</strong> allow read masks with non-terminal repeated fields (unlike
-  update masks), but is not obligated to do so.</li>
-</ul>
-<h3 id="choosing-a-strategy">Choosing a strategy</h3>
-<p>Individual APIs have their own needs, and a partial response strategy that is
-appropriate for one API may not be appropriate for another. However, generally
-APIs <strong>should not</strong> be providing resource views unless they are truly needed.</p>
-<h4>Benefits of view enums</h4>
-<ul>
-<li>View enums allow an API to present the user with a limited number of choices,
-  and are useful when presenting fine-grained control will be cumbersome, or in
-  situations where the additional information returned represents a different
-  tier of service.</li>
-<li>View enums allow the API to add fields to each view over time, if desired.</li>
-<li>View enums usually require less upkeep for users.</li>
-<li>View enums are effective when the API knows which fields are expensive to
-  compute, and that this cost will not significantly change over time.</li>
-</ul>
-<h4>Benefits of read masks</h4>
-<ul>
-<li>Read masks allow the user fine-grained control, and are ideal when the user
-  wants to get precisely a certain set of fields back, and there are too many
-  combinations to reasonably represent with view enums.</li>
-<li>Read masks are beneficial when separate fields are independently expensive to
-  compute, and an API wants to send back only the subset that the user needs.</li>
-</ul>
-<p><strong>Note:</strong> If an API requires partial responses, it <strong>should</strong> generally decide
-to either support view enums or read masks across the board, but not mix and
-match. If an API does support both, it <strong>must not</strong> support both a view and a
-read mask on the same resource.</p>
-<h2 id="changelog">Changelog</h2>
-<ul>
-<li><strong>2021-03-04:</strong> Added guidance for conflicting view enums.</li>
-</ul>
+<p>In this situation, the get or create methods <strong>should</strong> still only check
+<em>their</em> permissions when determining what error to return, and not one
+another's.</p>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
