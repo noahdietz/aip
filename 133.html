@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=3ea980f9">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=3ea980f9">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=ffe0a712">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=ffe0a712">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,7 +18,7 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=3ea980f9"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=ffe0a712"></script>
     
 <script type="text/javascript" src="/assets/js/syntax.js"></script>
 
@@ -460,6 +460,12 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/182">
+        <span class="aip-number">182</span>
+        External software dependencies
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/191">
         <span class="aip-number">191</span>
         File and directory structure
@@ -632,7 +638,7 @@
 </section>
   
   <h4 class="aip-number">AIP-133</h4>
-  <h1>Standard methods: Create</h1>
+  <h1 id="standard-methods-create">Standard methods: Create</h1>
 <p>In REST APIs, it is customary to make a <code>POST</code> request to a collection's URI
 (for example, <code>/v1/publishers/{publisher}/books</code>) in order to create a new
 resource within that collection.</p>
@@ -681,8 +687,10 @@ a new resource in an already-existing collection.</p>
 </ul>
 </li>
 <li>There <strong>should</strong> be exactly one <code>google.api.method_signature</code> annotation,
-  with a value of <code>"parent,{resource}"</code> (unless the method supports
-  <a href="#user-specified-ids">user-specified IDs</a>).</li>
+  with a value of <code>"parent,{resource}"</code> if the resource being created is not a
+  top-level resource, or with a value of <code>"{resource}"</code> if the resource being
+  created is a top-level resource (unless the method supports <a href="#user-specified-ids">user-specified
+  IDs</a>).</li>
 </ul>
 <h3 id="request-message">Request message</h3>
 <p>Create methods implement a common request message pattern:</p>
@@ -776,7 +784,10 @@ field on the request message:</p>
 </li>
 <li>The <code>name</code> field on the resource <strong>must</strong> be ignored.</li>
 <li>There <strong>should</strong> be exactly one <code>google.api.method_signature</code> annotation on
-  the RPC, with a value of <code>"parent,{resource},{resource}_id"</code>.</li>
+  the RPC, with a value of <code>"parent,{resource},{resource}_id"</code> if the resource
+  being created is not a top-level resource, or with a value of
+  <code>"{resource},{resource}_id"</code> if the resource being created is a top-level
+  resource.</li>
 <li>The documentation <strong>should</strong> explain what the acceptable format is, and the
   format <strong>should</strong> follow the guidance for resource name formatting in
   <a href="/122">AIP-122</a>.</li>

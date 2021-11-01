@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=3ea980f9">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=3ea980f9">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=ffe0a712">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=ffe0a712">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,7 +18,7 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=3ea980f9"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=ffe0a712"></script>
     
 <script type="text/javascript" src="/assets/js/syntax.js"></script>
 
@@ -460,6 +460,12 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="/182">
+        <span class="aip-number">182</span>
+        External software dependencies
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="/191">
         <span class="aip-number">191</span>
         File and directory structure
@@ -630,7 +636,7 @@
 </section>
   
   <h4 class="aip-number">AIP-126</h4>
-  <h1>Enumerations</h1>
+  <h1 id="enumerations">Enumerations</h1>
 <p>It is common for a field to only accept or provide a discrete and limited set
 of values. In these cases, it can be useful to use enumerations (generally
 abbreviated "enums") in order to clearly communicate what the set of allowed
@@ -675,12 +681,20 @@ infrequently:</p>
   and more useful for it to be a zero value rather than having both.</li>
 </ul>
 </li>
+<li>The other values <strong>should not</strong> be prefixed by the name of the enum itself.
+  This generally requires users to write <code>MyState.MYSTATE_ACTIVE</code> in their
+  code, which is unnecessarily verbose.<ul>
+<li>Note that some languages (including C++) hoist enum values into the parent
+  namespace, which can result in conflicts for enums with the same values in
+  the same proto package. To avoid this, multiple enums in the same proto
+  package <strong>must not</strong> share any values. To avoid sharing values, APIs
+  <strong>may</strong> prefix enum values with the name of the enum. In this case, they
+  <strong>must</strong> do so consistently within the enum.</li>
+</ul>
+</li>
 <li>Enums which will only be used in a single message <strong>should</strong> be nested within
   that message. In this case, the enum <strong>should</strong> be declared immediately
   before it is used.</li>
-<li>If multiple enums are in the same namespace, they <strong>must not</strong> share any
-  values. (This is because enums do not provide their own namespace for their
-  values in some languages.)</li>
 <li>Enums <strong>should</strong> document whether the enum is frozen or they expect to add
   values in the future.</li>
 </ul>
