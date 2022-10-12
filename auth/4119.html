@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-4112: Service Account Keys</title>
+    <title>AIP-4119: mTLS Token Binding</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -201,7 +201,7 @@
         Self-signed JWT
       </a>
     </li>
-    <li class="nav-item nav-item-active">
+    <li class="nav-item">
       <a href="/4112">
         <span class="aip-number">4112</span>
         Service Account Keys
@@ -243,7 +243,7 @@
         Mutual Authentication Using Workload Credentials
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/4119">
         <span class="aip-number">4119</span>
         mTLS Token Binding
@@ -255,19 +255,20 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Service Account Keys</th></tr>
-    <tr><td>Number</td><td>4112</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/auth/4112">google.aip.dev/auth/4112</a></td></tr>
+    <tr><th colspan="2">mTLS Token Binding</th></tr>
+    <tr><td>Number</td><td>4119</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/auth/4119">google.aip.dev/auth/4119</a></td></tr>
     <tr><td>Scope</td><td>Auth</td></tr>
-    <tr><td>State</td><td>Approved</td></tr>
-    <tr><td>Created</td><td>2020-08-13</td></tr>
-    <tr><td>Updated</td><td>2020-08-13</td></tr>
+    <tr><td>State</td><td>Draft</td></tr>
+    <tr><td>Created</td><td>2022-09-09</td></tr>
+    <tr><td>Updated</td><td>2022-09-09</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#guidance">Guidance</a><ul>
-<li><a href="#service-account-key-authentication-using-oauth">Service Account Key Authentication Using OAuth</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#using-mtls-token-binding">Using mTLS Token Binding</a></li>
 <li><a href="#expected-behavior">Expected Behavior</a></li>
 </ul>
 </li>
@@ -279,8 +280,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/auth/4112.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/auth/4112.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/auth/4119.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/auth/4119.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -305,92 +306,155 @@
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Service Account Keys
+        mTLS Token Binding
       </li>
     </ol>
   </nav>
 </section>
-  
-  <h4 class="aip-number">AIP-4112</h4>
-  <h1 id="service-account-keys">Service Account Keys</h1>
-<p>A service account is a special kind of account used by an application or a
-virtual machine (VM) instance, not a person. Applications use service accounts
-to make authorized API calls, authorized as either the service account itself,
-or as Google Workspace or Cloud Identity users through domain-wide delegation. 
-Service accounts are associated with private/public RSA key-pairs that are used 
-for authentication, which is the focus of this AIP.</p>
+  <p id="aip-state-banner" class="callout warning">
+  This AIP is currently a draft. This means that it is being actively debated
+  and discussed, and it may change in non-trivial ways.
+</p>
+  <h4 class="aip-number">AIP-4119</h4>
+  <h1 id="mtls-token-binding">mTLS Token Binding</h1>
+<p>Token binding allows issuing Google access tokens that are bound to mTLS
+credentials. The advantage of such mTLS bound tokens is that they are meant to
+only be used over secure channels established via mTLS credentials they are
+bound to. Therefore, using bound tokens is more secure than bearer tokens which
+can be stolen and adversarially replayed.</p>
+<p>This AIP describes the flow of (1) obtaining access tokens bound to X.509
+certificate identities, called identity-bound tokens and (2) how to use them to
+access Google APIs using the Google auth libraries.</p>
 <p><strong>Note:</strong> Because this AIP describes guidance and requirements in a
 language-neutral way, it uses generic terminology which may be imprecise or
 inappropriate in certain languages or environments.</p>
 <h2 id="guidance">Guidance</h2>
-<p>This section describes the general guidance of supporting Service Account Key
-authentication using traditional OAuth flow. For Service Account Key
-authentication using self-signed JWT flow, please refer to the <a href="https://google.aip.dev/auth/4111">self-signed
-JWT</a> AIP.</p>
-<h3 id="service-account-key-authentication-using-oauth">Service Account Key Authentication Using OAuth</h3>
-<p>Under the latest <a href="https://google.aip.dev/auth/4110">ADC</a> guidance, when Service Account Key is provided as the
-source credential, we prefer to use the <a href="https://google.aip.dev/auth/4111">self-signed JWT</a> flow by default,
-which does not use the OAuth "scope" argument. Therefore, the client <strong>should</strong>
-choose the OAuth flow over self-signed JWT flow only if the OAuth "scope" is
-explicitly provided to the client.</p>
-<h3 id="expected-behavior">Expected Behavior</h3>
-<p>To support Service Account Key authentication using OAuth flow, the auth
-libraries <strong>must</strong> follow the steps below:</p>
-<p>1. Load the <strong>Service Account ID JSON file</strong> from the file path specified by
-<strong>GOOGLE_APPLICATION_CREDENTIALS</strong> environment variable, or an explicit
-<strong>credentials</strong> file path specified through client options. The JSON file will
-look like below:</p>
+<p>If users enable token binding, they <strong>should</strong> do so via <a href="https://google.aip.dev/auth/4110">ADC</a>. This section
+describes the general guidance of supporting such tokens.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Identity-bound access tokens require that the clients have
+<a href="https://github.com/spiffe/spiffe/blob/main/standards/X509-SVID.md">X.509 SPIFFE Verifiable Identity Documents</a> (SVIDs). <a href="https://google.aip.dev/auth/4118">Mutual Authentication
+Using Workload Credentials</a> describes how such SVIDs are provisioned in
+Google Cloud.</p>
+<p>Additionally, identity-bound access tokens tokens require configuring a workload
+identity pool and identity provider with Google Cloud's IAM. The instructions on
+how to do this are out of scope of this AIP.</p>
+<h3 id="using-mtls-token-binding">Using mTLS Token Binding</h3>
+<p>The auth libraries <strong>must</strong> support the following values in the
+<strong>"~/.config/gcloud/certificate_config.json"</strong> configuration file. Note that the
+default location of this file can be changed using the
+<code>GOOGLE_API_CERTIFICATE_CONFIG</code> environment variable.</p>
 <div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;service_account&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;testproject&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;private_key_id&quot;</span><span class="p">:</span> <span class="s2">&quot;redacted&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;private_key&quot;</span><span class="p">:</span> <span class="s2">&quot;redacted&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;client_email&quot;</span><span class="p">:</span> <span class="s2">&quot;testserviceaccount@test.iam.gserviceaccount.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;client_id&quot;</span><span class="p">:</span> <span class="s2">&quot;113258942105700140798&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;auth_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://accounts.google.com/o/oauth2/auth&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;token_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://oauth2.googleapis.com/token&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;auth_provider_x509_cert_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/oauth2/v1/certs&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;client_x509_cert_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/robot/v1/metadata/x509/testserviceaccount%40test.iam.gserviceaccount.com&quot;</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="nt">&quot;cert_configs&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;workload&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;cert_path&quot;</span><span class="p">:</span> <span class="nt">&quot;path/to/cert/file&quot;</span>
+      <span class="nt">&quot;key_path&quot;</span><span class="p">:</span> <span class="nt">&quot;path/to/key/file&quot;</span>
+      <span class="nt">&quot;workload_identity_provider&quot;</span><span class="p">:</span> <span class="nt">&quot;...&quot;</span>
+      <span class="nt">&quot;authenticate_as_identity_type&quot;</span><span class="p">:</span> <span class="nt">&quot;gsa/native&quot;</span>
+      <span class="nt">&quot;service_account_email&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;keychain&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="err">...</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pkcs11&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="err">...</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;windows&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="err">...</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;libs&quot;</span><span class="p">:</span> <span class="p">{</span>
+   <span class="err">...</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p><strong>Note:</strong> A Service Account ID JSON file can be downloaded from <a href="https://console.cloud.google.com/apis/credentials">Google Cloud Console</a>.</p>
-<p>2. Using any standard JWT library, such as one found at <a href="https://jwt.io/#libraries-io">jwt.io</a>, create a
-JWT with a header and claims set like the following example:</p>
-<div class="highlight language-json"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;RS256&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;typ&quot;</span><span class="p">:</span> <span class="s2">&quot;JWT&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;abcdef1234567890&quot;</span>
-<span class="p">}</span>
-<span class="p">{</span>
-  <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;123456-compute@developer.gserviceaccount.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;123456-compute@developer.gserviceaccount.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/auth/pubsub&quot;</span><span class="p">,</span>
-<span class="p">}</span>
+<p>The following lists the fields relevant to mTLS token binding configuration:</p>
+<ul>
+<li><strong>"workload_identity_provider"</strong>: The specified value will be used to
+populate the request to Security Token Service (STS) to request
+identity-bound access tokens. This value refers to the fully qualified name
+of the workload identity pool and identity provider configured in IAM. The
+specified value <strong>must</strong> be of the following format.</li>
+</ul>
+<div class="highlight language-None"><pre><span></span><code>&quot;workload_identity_provider&quot;:&quot;//iam.googleapis.com/projects/&lt;project_number&gt;/locations/global/workloadIdentityPools/&lt;pool_identifier&gt;/providers/&lt;provider_identifier&gt;&quot;
 </code></pre></div>
 <ul>
 <li>
-<p>For the <code>kid</code> field in the header, specify the service account's private
-key ID. You can find this value in the <strong>private_key_id</strong> field of the
-service account JSON file.</p>
+<p><strong>"authenticate_as_identity_type"</strong>: This field specifies what identity is
+used to authenticate to Google APIs. The value can be set to <code>gsa</code> or
+<code>native</code>, where <code>gsa</code> is the GCP service account of the workload, e.g., the
+GCP service account of a GCE VM, and <code>native</code> is the native workload
+identity, e.g., the GKE pod kubernetes service account. If not specified,
+the default value is <code>gsa</code>.</p>
 </li>
 <li>
-<p>For the <code>iss</code> and <code>sub</code> fields, specify the service account's email
-address. You can find this value in the <strong>client_email</strong> field of the
-service account JSON file.</p>
-</li>
-<li>
-<p>For the <code>scope</code> field, specify the <strong>scope</strong> parameter provided by the client.
-Multiple scopes can be specified using single space (" ") as delimiter.</p>
+<p><strong>"service_account_email"</strong>: If set, the specified value will be used to
+populate the request to the IAM Credentials service to request
+identity-bound access tokens. This value refers to the service account email
+to be used for resource access. If not set, the service account email will
+be determined automatically by querying the following Metadata Service
+endpoint:
+<code>http://metadata/computeMetadata/v1/instance/service-accounts/default/email</code>.
+The value of this field is only relevant if
+<strong>"authenticate_as_identity_type"</strong> is set to <code>gsa</code>.</p>
 </li>
 </ul>
-<p>3. Sign the JWT with RSA-256 using the <strong>private_key</strong> found in the service
-account JSON file. The output will be used as the request payload (a.k.a.
-assertion) for the 2-legged OAuth flow.</p>
-<p>4. Define a parameter "grant_type" as
-"urn:ietf:params:oauth:grant-type:jwt-bearer". Define a parameter "assertion" as
-the payload from step 3.</p>
-<p>5. Make a POST request to the <strong>token_uri</strong> endpoint with the parameters from
-step 4 to obtain an OAuth2 Access Token.</p>
+<p>The description of the <strong>"cert_path"</strong> and <strong>"key_path"</strong> fields can be found in
+<a href="https://google.aip.dev/auth/4118">Mutual Authentication Using Workload Credentials</a>.</p>
+<p>To enable using token binding when communicating with Google APIs the following
+conditions are required:</p>
+<ul>
+<li>
+<p><a href="https://google.aip.dev/auth/4118">Mutual Authentication Using Workload Credentials</a> <strong>must</strong> be enabled.</p>
+</li>
+<li>
+<p>The <strong>"workload_identity_provider"</strong> <strong>must</strong> be present,
+<strong>"authenticate_as_identity_type"</strong> <strong>may</strong> be set and
+<strong>"service_account_email"</strong> <strong>may</strong> be set in the <strong>"workload"</strong>
+section of the <strong>"~/.config/gcloud/certificate_config.json"</strong> configuration
+file.</p>
+</li>
+</ul>
+<h3 id="expected-behavior">Expected Behavior</h3>
+<p>To support the usage of identity-bound access tokens, the auth libraries
+<strong>must</strong> follow the steps below when sending requests to Google APIs:</p>
+<ol>
+<li>
+<p>Connect to the mTLS endpoint of the <a href="https://cloud.google.com/iam/docs/reference/sts/rest">STS API</a> using the workload
+credentials provisioned as described in <a href="https://google.aip.dev/auth/4118">Mutual Authentication Using
+Workload Credentials</a>. This endpoint <strong>must</strong> be
+<code>sts.mtls.googleapis.com</code>.</p>
+</li>
+<li>
+<p>Send an HTTP request to STS’s <a href="https://cloud.google.com/iam/docs/reference/sts/rest/v1/TopLevel/token">ExchangeToken</a> method requesting an
+identity-bound token using the information in the
+<strong>"workload_identity_provider"</strong> field in the
+<strong>"~/.config/gcloud/certificate_config.json"</strong> configuration file. The
+scope of the requested token <strong>must</strong> be
+<code>https://www.googleapis.com/auth/iam</code>.</p>
+</li>
+<li>
+<p>Connect to the mTLS endpoint of the <a href="https://cloud.google.com/iam/docs/reference/credentials/rest">IAM Credentials Service API</a> using
+the workload credentials provisioned as described in <a href="https://google.aip.dev/auth/4118">Mutual Authentication
+Using Workload Credentials</a>. This endpoint <strong>must</strong> be
+<code>iamcredentials.mtls.googleapis.com</code>.</p>
+</li>
+<li>
+<p>If <strong>"authenticate_as_identity_type"</strong> is set to <code>gsa</code>, send an HTTP
+request to the IAM Credentials Service’s <a href="https://cloud.google.com/iam/docs/reference/credentials/rest/v1/projects.serviceAccounts/generateAccessToken">GenerateAccessToken</a> method
+requesting an identity bound token asserting the service account email in
+the <strong>"service_account_email"</strong> field in the
+<strong>"~/.config/gcloud/certificate_config.json"</strong> configuration file. The
+scope of this token <strong>must</strong> be the same scope defined by the user for
+accessing the requested Google API.</p>
+</li>
+<li>
+<p>Attach the returned token in Step 4 to the request. Note that this request
+<strong>must</strong> be sent over an mTLS channel using the same workload credentials
+in Step 1.</p>
+</li>
+</ol>
 <!-- prettier-ignore-start -->
 <!-- prettier-ignore-end -->
   <footer>
