@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>Content licensing</title>
+    <title>AIP-111: Planes</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -20,6 +20,8 @@
     </script>
     <script type="text/javascript" src="/assets/js/global.js?v=ce2e0e3f"></script>
     
+<script type="text/javascript" src="/assets/js/syntax.js"></script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140054909-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -164,7 +166,8 @@
     <div class="glue-page">
       
       <main role="main" id="page-content">
-        <nav id="aip-nav" class="docs-component-nav">
+        
+<nav id="aip-nav" class="docs-component-nav">
   <ul class="nav-list">
     <li class="nav-item nav-item-header">AIPs by Scope</li>
     <li class="nav-item">
@@ -222,7 +225,7 @@
         API Design Review FAQ
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/111">
         <span class="aip-number">111</span>
         Planes
@@ -599,15 +602,24 @@
 <section id="jump-content">
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
+  <table id="aip-summary">
+    <tr><th colspan="2">Planes</th></tr>
+    <tr><td>Number</td><td>111</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/111">google.aip.dev/111</a></td></tr>
+    <tr><td>State</td><td>Approved</td></tr>
+    <tr><td>Created</td><td>2023-06-17</td></tr>
+    <tr><td>Updated</td><td>2023-06-17</td></tr>
+  </table>
+
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#restrictions">Restrictions</a></li>
-<li><a href="#attribution">Attribution</a><ul>
-<li><a href="#exact-reproductions">Exact reproductions</a></li>
-<li><a href="#modified-versions">Modified versions</a></li>
-<li><a href="#other-media">Other media</a></li>
+<li><a href="#guidance">Guidance</a><ul>
+<li><a href="#management-plane">Management Plane</a></li>
+<li><a href="#data-plane">Data Plane</a></li>
+<li><a href="#major-distinctions-between-management-and-data-plane">Major distinctions between management and data plane</a></li>
 </ul>
 </li>
+<li><a href="#changelog">Changelog</a></li>
 </ul>
 </div>
 
@@ -616,8 +628,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/pages/general/licensing.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/pages/general/licensing.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0111.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0111.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -634,78 +646,91 @@
         </a>
       </li>
       
+      <li class="glue-breadcrumbs__item" aria-level="2">
+        <a class="glue-breadcrumbs__link" href="/general">
+          General AIPs
+        </a>
+      </li>
+      
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Content licensing
+        Planes
       </li>
     </ol>
   </nav>
 </section>
-  <h1 id="content-licensing">Content licensing</h1>
-<p>We are pleased to license much of the AIP content under terms that explicitly
-encourage people to take, modify, reuse, re-purpose, and remix our work as they
-see fit.</p>
-<p>You will find the following notice at the bottom of many pages:</p>
-<blockquote>
-<p>Except as otherwise noted, the content of this page is licensed under the
-<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 License</a>, and code samples are
-licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>. For details, see
-<a href="./licensing.md">content licensing</a>.</p>
-</blockquote>
-<p>When you see a page with this notice you are free to use
-<a href="#restrictions">nearly everything</a> on the page in your own creations. For
-example, you could quote the text in a book, cut-and-paste sections to your
-blog, record it as an audiobook for the visually impaired, or even translate it
-into Swahili. Really. That's what open content licenses are all about. We just
-ask that you give us <a href="#attribution">attribution</a> when you reuse our work.</p>
-<p>In addition, you are free to use the computer source code that appears in the
-content (such as in examples) in the code of your own projects.</p>
-<h2 id="restrictions">Restrictions</h2>
-<p>We say "nearly everything" as there are a few simple conditions that apply.</p>
-<p>Google's trademarks and other brand features are not included in this license.
-Please see our <a href="http://www.google.com/permissions/guidelines.html">standard guidelines for third party use of Google brand
-features</a> for information about this usage.</p>
-<p>In some cases, a page may include content consisting of images, audio or video
-material, or a link to content on a different webpage (such as videos or slide
-decks). This content is not covered by the license, unless specifically noted.</p>
-<h2 id="attribution">Attribution</h2>
-<p>Proper attribution is required when you reuse or create modified versions of
-content that appears on a page made available under the terms of the Creative
-Commons Attribution license. The complete requirements for attribution can be
-found in section 3 of the <a href="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons legal code</a>.</p>
-<p>In practice we ask that you provide attribution to Google to the best of the
-ability of the medium in which you are producing the work.</p>
-<p>There are several typical ways in which this might apply:</p>
-<h3 id="exact-reproductions">Exact reproductions</h3>
-<p>If your online work <em>exactly reproduces</em> text or images from this site, in
-whole or in part, please include a paragraph at the bottom of your page that
-reads:</p>
-<blockquote>
-<p>Portions of this page are reproduced from work created and <a href="./licensing.md">shared by
-Google</a> and used according to terms described in the <a href="https://creativecommons.org/licenses/by/4.0/">Creative
-Commons 4.0 Attribution License</a>.</p>
-</blockquote>
-<p>Also, please link back to the original source page so that readers can refer to
-it for more information.</p>
-<h3 id="modified-versions">Modified versions</h3>
-<p>If your online work shows modified text or images based on the content from
-this site, please include a paragraph at the bottom of your page that reads:</p>
-<blockquote>
-<p>Portions of this page are modifications based on work created and <a href="./licensing.md">shared by
-Google</a> and used according to terms described in the <a href="https://creativecommons.org/licenses/by/4.0/">Creative
-Commons 4.0 Attribution License</a>.</p>
-</blockquote>
-<p>Again, please link back to the original source page so that readers can refer
-to it for more information. This is even more important when the content has
-been modified.</p>
-<h3 id="other-media">Other media</h3>
-<p>If you produce non-hypertext works, such as books, audio, or video, we ask that
-you make a best effort to include a spoken or written attribution in the spirit
-of the messages above.</p>
-
-  <footer><p>This page was adapted from the <a href="https://developers.google.com/terms/site-policies">site policies</a> for developers.google.com.
-Last updated: May 13, 2019</p></footer>
-  </section>
+  
+  <h4 class="aip-number">AIP-111</h4>
+  <h1 id="planes">Planes</h1>
+<p>Resources and methods on an API can be divided into the <em>plane</em> that they reside
+or perform operations upon. For the context of APIs, the following planes are
+defined:</p>
+<ul>
+<li>Management plane: a uniform, resource-oriented API that primarily
+  configures and allows retrieval of resources.</li>
+<li>Data plane: a heterogenous API (ideally resource-oriented) that reads and
+  write user data. Often connects to entities provisioned by the management
+  plane, such as virtual machines.</li>
+</ul>
+<p>The term "plane" was originally used in networking architecture. Although system
+and network architecure often defines additional planes (e.g. control plane or
+power planes), as the AIPs are focused on the interface, they are not defined in
+this AIP.</p>
+<h2 id="guidance">Guidance</h2>
+<h3 id="management-plane">Management Plane</h3>
+<p>Management resources and methods exist primarily to provision, configure, and
+audit the resources that the data plane interfaces with.</p>
+<p>As an example, the following are considered management resources for a cloud
+provider:</p>
+<ul>
+<li>virtual machines</li>
+<li>virtual private networks</li>
+<li>virtual disks</li>
+<li>a blob store instance</li>
+<li>a project or account</li>
+</ul>
+<h3 id="data-plane">Data Plane</h3>
+<p>Methods on the data plane operate on user data in a variety of data formats, and
+generally interface with a resource provisioned via a management plane API.
+Examples of data plane methods include:</p>
+<ul>
+<li>writing and reading rows in a table</li>
+<li>pushing to or pulling from a message queue</li>
+<li>uploading blobs to or downloading blobs from a blob store instance</li>
+</ul>
+<p>Data plane APIs <strong>may</strong> be heterogenous across a larger API surface, due to
+requirements including high throughput, low latency, or the need to adhere to an
+existing interface specification (e.g. ANSI SQL).</p>
+<ul>
+<li>For convenience, resources and methods that operate on the data plane <strong>may</strong>
+expose themselves via resource-oriented management APIs. If so, those resources
+and methods <strong>must</strong> adhere to the requirements of the management plane as
+specified in the other AIPs (<a href="/131">AIP-131</a> through <a href="/136">AIP-135</a>).</li>
+</ul>
+<h3 id="major-distinctions-between-management-and-data-plane">Major distinctions between management and data plane</h3>
+<ul>
+<li><a href="/9#iac">IaC</a> tools operate on the management plane exclusively.</li>
+<li>Data planes are often on the critical path of user-facing functionality, and
+  therefore:<ul>
+<li>Have higher availabilty requirements than management planes.</li>
+<li>Are more peformance-sensitive than management planes.</li>
+<li>Require higher-throughput than management planes.</li>
+</ul>
+</li>
+</ul>
+<h2 id="changelog">Changelog</h2>
+<ul>
+<li><strong>2023-06-10</strong>: Introduction of this AIP.</li>
+</ul>
+  <footer>
+  Except as otherwise noted, the content of this page is licensed under the
+  <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
+  Attribution 4.0 License</a>, and code samples are licensed under the
+  <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>.
+  <span class="no-print">For details, see <a href="/licensing">content
+  licensing</a>.</span>
+</footer>
+</section>
 
         </section>
       </main>
