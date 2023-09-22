@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-159: Reading across collections</title>
+    <title>AIP-202: Fields</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -423,7 +423,7 @@
         Pagination
       </a>
     </li>
-    <li class="nav-item nav-item-active">
+    <li class="nav-item">
       <a href="/159">
         <span class="aip-number">159</span>
         Reading across collections
@@ -513,7 +513,7 @@
         Precedent
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item nav-item-active">
       <a href="/202">
         <span class="aip-number">202</span>
         Fields
@@ -609,22 +609,21 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Reading across collections</th></tr>
-    <tr><td>Number</td><td>159</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/159">google.aip.dev/159</a></td></tr>
-    <tr><td>State</td><td>Approved</td></tr>
-    <tr><td>Created</td><td>2019-07-26</td></tr>
-    <tr><td>Updated</td><td>2019-07-26</td></tr>
+    <tr><th colspan="2">Fields</th></tr>
+    <tr><td>Number</td><td>202</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/202">google.aip.dev/202</a></td></tr>
+    <tr><td>State</td><td>Reviewing</td></tr>
+    <tr><td>Created</td><td>2023-09-22</td></tr>
+    <tr><td>Updated</td><td>2023-09-22</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#guidance">Guidance</a><ul>
-<li><a href="#unique-resource-lookup">Unique resource lookup</a></li>
+<li><a href="#format">Format</a></li>
 </ul>
 </li>
-<li><a href="#further-reading">Further reading</a></li>
-<li><a href="#changelog">Changelog</a></li>
+<li><a href="#rationale">Rationale</a></li>
 </ul>
 </div>
 
@@ -633,8 +632,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0159.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0159.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/general/0202.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/general/0202.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -659,73 +658,89 @@
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Reading across collections
+        Fields
       </li>
     </ol>
   </nav>
 </section>
-  
-  <h4 class="aip-number">AIP-159</h4>
-  <h1 id="reading-across-collections">Reading across collections</h1>
-<p>Sometimes, it is useful for a user to be able to retrieve resources across
-multiple collections, or retrieve a single resource without needing to know
-what collection it is in.</p>
+  <p id="aip-state-banner" class="callout note">
+  This AIP is currently under review. This means that the editors have read it
+  and are in high-level concurrence, and while it is not yet fully approved, we
+  have a good faith expectation that the AIP will be approved in something
+  close to its current state.
+</p>
+  <h4 class="aip-number">AIP-202</h4>
+  <h1 id="fields">Fields</h1>
+<p>The <a href="https://github.com/googleapis/googleapis/blob/master/google/api/field.proto"><code>google.api.Field</code></a> type, through its accompanying extension
+<code>google.api.field</code>, enriches a field's schema beyond the basic name and type
+information.</p>
 <h2 id="guidance">Guidance</h2>
-<p>APIs <strong>may</strong> support reading resources across multiple collections by allowing
-users to specify a <code>-</code> (the hyphen or dash character) as a wildcard character
-in a standard <a href="/132"><code>List</code></a> method:</p>
-<div class="highlight language-None"><pre><span></span><code>GET /v1/publishers/-/books?filter=...
-</code></pre></div>
-<ul>
-<li>The URI pattern <strong>must</strong> still be specified with <code>*</code> and permit the
-  collection to be specified; a URI pattern <strong>must not</strong> hard-code the <code>-</code>
-  character.</li>
-<li>The method <strong>must</strong> explicitly document that this behavior is supported.</li>
-<li>The resources provided in the response <strong>must</strong> use the canonical name of the
-  resource, with the actual parent collection identifiers (instead of <code>-</code>).</li>
-<li>Services <strong>may</strong> support reading across collections on <code>List</code> requests
-  regardless of whether the identifiers of the child resources are guaranteed
-  to be unique. However, services <strong>must not</strong> support reading across
-  collections on <code>Get</code> requests if the child resources might have a collision.</li>
-<li>Cross-parent requests <strong>should not</strong> support <code>order_by</code>. If they do, the
-  field <strong>must</strong> document that it is best effort. This is because cross-parent
-  requests introduce ambiguity around ordering, especially if there is
-  difficulty reaching a parent (see <a href="/217">AIP-217</a>).</li>
-</ul>
-<p><strong>Important:</strong> If listing across multiple collections introduces the
-possibility of partial failures due to unreachable parents (such as when
-listing across locations), the method <strong>must</strong> indicate this following the
-guidance in <a href="/217">AIP-217</a>.</p>
-<h3 id="unique-resource-lookup">Unique resource lookup</h3>
-<p>Sometimes, a resource within a sub-collection has an identifier that is unique
-across parent collections. In this case, it may be useful to allow a
-<a href="/131"><code>Get</code></a> method to retrieve that resource without knowing which parent
-collection contains it. In such cases, APIs <strong>may</strong> allow users to specify the
-wildcard collection ID <code>-</code> (the hyphen or dash character) to represent any
-parent collection:</p>
-<div class="highlight language-None"><pre><span></span><code>GET https://example.googleapis.com/v1/publishers/-/books/{book}
-</code></pre></div>
-<ul>
-<li>The URI pattern <strong>must</strong> still be specified with <code>*</code> and permit the
-  collection to be specified; a URI pattern <strong>must not</strong> hard-code the <code>-</code>
-  character.</li>
-<li>The method <strong>must</strong> explicitly document that this behavior is supported.</li>
-<li>The resource name in the response <strong>must</strong> use the canonical name of the
-  resource, with actual parent collection identifiers (instead of <code>-</code>). For
-  example, the request above returns a resource with a name like
-  <code>publishers/123/books/456</code>, <em>not</em> <code>publishers/-/books/456</code>.</li>
-<li>The resource ID <strong>must</strong> be unique within parent collections.</li>
-</ul>
-<h2 id="further-reading">Further reading</h2>
-<ul>
-<li>For partial failures due to unreachable resources, see <a href="/217">AIP-217</a>.</li>
-</ul>
-<h2 id="changelog">Changelog</h2>
-<ul>
-<li><strong>2019-08-26</strong>: Added a reference to guidance for unreachable resources.</li>
-<li><strong>2019-08-01</strong>: Changed the examples from "shelves" to "publishers", to
-  present a better example of resource ownership.</li>
-</ul>
+<p>Decorating a field with <code>google.api.field</code> is only necessary when explicitly
+stated in this AIP or another that leverages <code>google.api.Field</code> information. As
+such, the guidance herein applies to those scenarios as well.</p>
+<h3 id="format">Format</h3>
+<p>Fields with a primitive type can still have a specific format. To convey that
+type format, the <code>Field.Format</code> enumeration is used via the
+<code>(google.api.field).format</code> extension field. The following guidance conveys the
+meaning of and requirements for use of each <code>Field.Format</code> value.</p>
+<h4 id="uuid4">UUID4</h4>
+<p>The <code>UUID4</code> format represents a UUID version 4 value as governed by
+<a href="https://datatracker.ietf.org/doc/html/rfc4122">RFC 4122</a>. It <strong>must</strong> only be used on a field of type <code>string</code>.</p>
+<p>Such a value <strong>may</strong> be normalized by the service to entirely lowercase letters.
+For example, the value <code>F47AC10B-58CC-0372-8567-0E02B2C3D479</code> would be
+normalized to <code>f47ac10b-58cc-0372-8567-0e02b2c3d479</code>.</p>
+<p>As such, equivalence comparison <strong>must not</strong> be done via primitive text
+comparison. Instead, an <a href="https://datatracker.ietf.org/doc/html/rfc4122">RFC 4122</a> compliant implementation <strong>must</strong> be used.</p>
+<h4 id="ipv4">IPv4</h4>
+<p>The <code>IPV4</code> format represents an IP v4 address as governed by <a href="https://datatracker.ietf.org/doc/html/rfc791">RFC 791</a>. It
+<strong>must</strong> only be used on a field of type <code>string</code>.</p>
+<p>Such a value <strong>may</strong> be condensed by the service, with leading zeros in each
+octet stripped. For example, <code>001.022.233.040</code> would be condensed to
+<code>1.22.233.40</code>.</p>
+<p>As such, equivalence comparison <strong>must not</strong> be done via primitive text
+comparison. Instead, an <a href="https://datatracker.ietf.org/doc/html/rfc791">RFC 791</a> compliant implementation <strong>must</strong> be used.</p>
+<h4 id="ipv6">IPv6</h4>
+<p>The <code>IPV6</code> format represents an IP v6 address as governed by <a href="https://datatracker.ietf.org/doc/html/rfc4291#section-2.2">RFC 4291</a>. It
+<strong>must</strong> only be used on a field of type <code>string</code>.</p>
+<p>Such a value <strong>may</strong> be normalized by the service to entirely lowercase letters,
+and zero-padded partial and empty octets. For example, the value <code>2001:DB8::</code>
+would be normalized to <code>2001:0db8:0:0</code>.</p>
+<p>As such, equivalence comparison <strong>must not</strong> be done via primitive text
+comparison. Instead, an <a href="https://datatracker.ietf.org/doc/html/rfc4291#section-2.2">RFC 4291</a> compliant implementation <strong>must</strong> be used.</p>
+<h4 id="ipv4-or-ipv6">IPv4 or IPv6</h4>
+<p>The <code>IPV4_OR_IPV6</code> value indicates that the field can be either an IP v4 or v6
+address, as described in the <a href="#ipv4">IPv4</a> and <a href="#ipv6">IPv6</a> sections.</p>
+<h4 id="format-compatibility">Format Compatibility</h4>
+<p>Adding a format specifier to an existing, unspecified field <strong>is not</strong> backwards
+compatible, <em>unless</em> the field in question has always conformed to the format
+being specified.</p>
+<p>Changing an existing format specifier to a different one in all cases <strong>is not</strong>
+backwards compatible.</p>
+<h4 id="extending-format">Extending Format</h4>
+<p>Any new <code>Field.Format</code> value <strong>must</strong> be governed by an
+<a href="https://www.ietf.org/standards/rfcs">IETF-approved RFC</a> or a <a href="/1">Google-approved AIP</a>.</p>
+<h2 id="rationale">Rationale</h2>
+<h4 id="why-add-a-format-specifier">Why add a format specifier?</h4>
+<p>The format of a primitive-typed field can be critical to its usability. Some
+programming languages may convey a specific type format as a standalone type,
+as Java does with <a href="https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html">UUID</a>. Most have specific structural requirements
+that are validated by the service, so conveying the format to the user ahead of
+time is critical to their experience.</p>
+<h4 id="why-discourage-primitive-equality-comparisons">Why discourage primitive equality comparisons?</h4>
+<p>The text representations of the supported formats have many nuances and
+transforming the value into a canonical representation is non-trivial. As such,
+aligning implementations between each consumer and each service without any
+issue is infeasiable.</p>
+<h4 id="why-document-value-normalizations">Why document value normalizations?</h4>
+<p>While primitive comparison is not recommended for any of the supported formats,
+uniform normalization of values is important to set consumer expectations, and
+create a user-friendly surface.</p>
+<h4 id="why-require-an-rfc-or-aip-for-new-formats">Why require an RFC or AIP for new formats?</h4>
+<p>Those formats which are sufficiently standardized to merit an RFC or AIP are
+stable enough and widely enough known to be incorporated as a supported value
+and see usage in Google APIs. Requiring such extra guidance means that governing
+the format specification is not the responsibility of the <code>Field.Format</code>
+enumeration itself.</p>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
