@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" class="glue-flexbox">
   <head>
-    <title>AIP-3260: Firebase CLI</title>
+    <title>AIP-4235: Automatically populate fields in the request message</title>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
@@ -190,57 +190,63 @@
     </li>
     <li class="nav-item nav-item-header">AIPs</li>
     <li class="nav-item">
-      <a href="/3201">
-        <span class="aip-number">3201</span>
-        Projects and Apps
+      <a href="/4210">
+        <span class="aip-number">4210</span>
+        Client library generators
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4221">
+        <span class="aip-number">4221</span>
+        Client-side retry
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4222">
+        <span class="aip-number">4222</span>
+        Routing headers
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4223">
+        <span class="aip-number">4223</span>
+        Client-side payload validation
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4231">
+        <span class="aip-number">4231</span>
+        Parsing resource names
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4232">
+        <span class="aip-number">4232</span>
+        Method signatures
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4233">
+        <span class="aip-number">4233</span>
+        Automatic pagination
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="/4234">
+        <span class="aip-number">4234</span>
+        Common service client mixins
       </a>
     </li>
     <li class="nav-item nav-item-active">
-      <a href="/3260">
-        <span class="aip-number">3260</span>
-        Firebase CLI
+      <a href="/4235">
+        <span class="aip-number">4235</span>
+        Automatically populate fields in the request message
       </a>
     </li>
     <li class="nav-item">
-      <a href="/3270">
-        <span class="aip-number">3270</span>
-        JavaScript APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3271">
-        <span class="aip-number">3271</span>
-        Android APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3272">
-        <span class="aip-number">3272</span>
-        iOS APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3273">
-        <span class="aip-number">3273</span>
-        C++ APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3274">
-        <span class="aip-number">3274</span>
-        .NET APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3275">
-        <span class="aip-number">3275</span>
-        Python APIs
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="/3276">
-        <span class="aip-number">3276</span>
-        Go APIs
+      <a href="/4290">
+        <span class="aip-number">4290</span>
+        Docker interface
       </a>
     </li>
     </ul>
@@ -249,24 +255,19 @@
           
 <aside id="aip-sidebar" class="docs-component-sidebar">
   <table id="aip-summary">
-    <tr><th colspan="2">Firebase CLI</th></tr>
-    <tr><td>Number</td><td>3260</td></tr>
-    <tr><td>Permalink</td><td><a href="https://google.aip.dev/firebase/3260">google.aip.dev/firebase/3260</a></td></tr>
-    <tr><td>Scope</td><td>Firebase</td></tr>
-    <tr><td>State</td><td>Draft</td></tr>
-    <tr><td>Created</td><td>2020-06-10</td></tr>
-    <tr><td>Updated</td><td>2020-06-10</td></tr>
+    <tr><th colspan="2">Automatically populate fields in the request message</th></tr>
+    <tr><td>Number</td><td>4235</td></tr>
+    <tr><td>Permalink</td><td><a href="https://google.aip.dev/client-libraries/4235">google.aip.dev/client-libraries/4235</a></td></tr>
+    <tr><td>Scope</td><td>Client libraries</td></tr>
+    <tr><td>State</td><td>Approved</td></tr>
+    <tr><td>Created</td><td>2024-03-07</td></tr>
+    <tr><td>Updated</td><td>2024-03-07</td></tr>
   </table>
 
   <section id="aip-toc" class="docs-component-sidebar-toc">
     <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#guidance">Guidance</a><ul>
-<li><a href="#command-naming">Command Naming</a></li>
-<li><a href="#project-selection">Project Selection</a></li>
-<li><a href="#json-output">JSON Output</a></li>
-<li><a href="#arguments-and-flags">Arguments and Flags</a></li>
-<li><a href="#common-command-types">Common Command Types</a></li>
-<li><a href="#deployment">Deployment</a></li>
+<li><a href="#expected-generator-and-client-library-behavior">Expected Generator and Client Library Behavior</a></li>
 </ul>
 </li>
 </ul>
@@ -277,8 +278,8 @@
   <section class="docs-component-sidebar-actions">
     <ul>
       <li><a href="https://github.com/aip-dev/google.aip.dev/issues/">File Bug</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/firebase/3260.md">View source</a></li>
-      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/firebase/3260.md">Edit this page</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/blob/master/aip/client-libraries/4235.md">View source</a></li>
+      <li><a href="https://github.com/aip-dev/google.aip.dev/edit/master/aip/client-libraries/4235.md">Edit this page</a></li>
     </ul>
   </section>
 </aside>
@@ -296,112 +297,62 @@
       </li>
       
       <li class="glue-breadcrumbs__item" aria-level="2">
-        <a class="glue-breadcrumbs__link" href="/firebase">
-          Firebase AIPs
+        <a class="glue-breadcrumbs__link" href="/client-libraries">
+          Client libraries AIPs
         </a>
       </li>
       
       <li class="glue-breadcrumbs__item glue-breadcrumbs__item--active"
           aria-level="3">
-        Firebase CLI
+        Automatically populate fields in the request message
       </li>
     </ol>
   </nav>
 </section>
-  <p id="aip-state-banner" class="callout warning">
-  This AIP is currently a draft. This means that it is being actively debated
-  and discussed, and it may change in non-trivial ways.
-</p>
-  <h4 class="aip-number">AIP-3260</h4>
-  <h1 id="firebase-cli">Firebase CLI</h1>
+  
+  <h4 class="aip-number">AIP-4235</h4>
+  <h1 id="automatically-populate-fields-in-the-request-message">Automatically populate fields in the request message</h1>
+<p>For APIs that leverage request idempotency as described via <a href="https://google.aip.dev/155">AIP-155</a>, APIs may
+choose to have the client libraries automatically populate fields such as
+<code>request_id</code> if they are not already set by the customer.</p>
+<p><strong>Note:</strong> This feature is primarily written for <code>request_id</code> fields within the
+request message. Nonetheless, this feature <strong>must</strong> work for a field of any
+name, as long as the conditions below hold true.</p>
 <h2 id="guidance">Guidance</h2>
-<h3 id="command-naming">Command Naming</h3>
-<p>Commands <strong>must</strong> be named in lowercase using colons to separate namespaces.
-The final segment of a command <strong>should</strong> be an action verb, for example
-<code>list</code>, <code>deploy</code>, or <code>clone</code>. A "get" of a single resource <strong>may</strong> omit the
-action for the sake of brevity (e.g. <code>apps:sdkconfig</code> instead of
-<code>apps:sdkconfig:get</code>).</p>
-<h3 id="project-selection">Project Selection</h3>
-<p>The Firebase CLI works with "project directories" that can be associated with
-one or more Firebase projects via the <code>use</code> command. This ambient project
-selection can be overridden by passing the <code>-P</code> or <code>--project</code> flag.</p>
-<p>All Firebase CLI commands <strong>must</strong> determine the intended project for a command
-based on common project selection, except when a command involves multiple
-projects (e.g. a command that clones configuration from one project to
-another).</p>
-<h3 id="json-output">JSON Output</h3>
-<p>All Firebase CLI commands support machine-readable output via the <code>--json</code>
-flag. If a command correlates to a single API call, the unmodified response of
-that API call should be provided as the JSON response (with wrapped CLI
-metadata).</p>
-<p>If a command does not directly correlate to an API call, the output <strong>should</strong>
-include all information a user might reasonably need for programmatic
-interpretation of the command. Output <strong>must</strong> be formatted in snake-case and
-generally conform to all standard Google API guidance (e.g. <a href="/140">field
-names</a>).</p>
-<h3 id="arguments-and-flags">Arguments and Flags</h3>
-<p>Required inputs for a command <strong>must</strong> be represented as arguments (e.g.
-<code>database:get /path</code>) unless doing so would be confusing to the user. For
-instance, <code>appdistribution:distribute</code> requires as input both a file to
-distribute and an App ID, so <code>--app &lt;appId&gt;</code> as a required flag is more clear
-than two unrelated arguments with no clear hierarchy.</p>
-<p>Flags <strong>must</strong> be named using kebab case (e.g. <code>--example-flag</code>) and <strong>may</strong>
-provide a single-letter alias that does not conflict with <a href="https://github.com/firebase/firebase-tools/blob/master/src/index.js">defined global
-flags</a>.</p>
-<h4 id="common-flags">Common Flags</h4>
+<p>APIs <strong>may</strong> configure fields in the request message for automatic population.
+For a field to be automatically populated, <strong>all</strong> the conditions below
+<strong>must</strong> be true:</p>
 <ul>
-<li><code>--app &lt;appId&gt;</code> - used to refer to a specific app within a Firebase project.</li>
-<li><code>--force</code> - used to indicate that a command should proceed without additional
-  prompting regarding potentially destructive actions. For example, deploying
-  Cloud Functions with <code>--force</code> will automatically delete functions, while
-  without the user is prompted.</li>
-<li><code>-o, --output &lt;path&gt;</code> - this flag <strong>may</strong> be used to allow convenient output
-  of a serialized response to a local file. If the output is JSON, it <strong>must</strong>
-  output equivalent JSON to <code>--json</code> without wrapped CLI metadata. If the
-  command fetches a deployable resource, it <strong>must</strong> fetch it in a
-  deploy-compatible format. The string path <strong>may</strong> be optional if a clear
-  default path exists. If a file already exists at the path, a confirmation
-  prompt <strong>must</strong> be displayed unless a <code>--force</code> flag is also provided.</li>
+<li>The field <strong>must</strong> be of type <code>string</code></li>
+<li>The field <strong>must</strong> be at the top-level of the request message</li>
+<li>The RPC <strong>must</strong> be a unary RPC (i.e. streaming RPCs are not supported)</li>
+<li>The field <strong>must not</strong> be annotated
+  with <a href="https://google.aip.dev/203#required"><code>google.api.field_behavior = REQUIRED</code></a>.</li>
+<li>The field <strong>must</strong> be annotated
+  with <a href="https://google.aip.dev/202#uuid4"><code>google.api.field_info.format = UUID4</code></a>.</li>
+<li>The field name <strong>must</strong> be listed
+  in the <a href="https://github.com/googleapis/googleapis/blob/master/google/api/client.proto"><code>google.api.MethodSettings.auto_populated_fields</code></a> entry
+  in <a href="https://github.com/googleapis/googleapis/blob/master/google/api/client.proto"><code>google.api.Publishing.method_settings</code></a>
+  for the target method.</li>
 </ul>
-<h3 id="common-command-types">Common Command Types</h3>
-<h4 id="list-commands">List Commands</h4>
-<p>Commands that return a list of like resources <strong>must</strong> use a <code>:list</code> suffix
-(e.g. <code>projects:list</code>).</p>
-<p>List commands <strong>must not</strong> require manual pagination (e.g. a <code>--page-token</code>
-flag) and will generally fetch all results (via multiple API calls if
-necessary). List commands <strong>may</strong> include a <code>--limit &lt;int&gt;</code> flag when a
-natural ordering exists, such as a reverse chronological list of releases.
-A <code>--limit 0</code> flag indicates that all results should be fetched and
-returned.</p>
-<p>The JSON output of a list command <strong>must</strong> be a concatenated array of all
-fetched resources in their original wire format.</p>
-<h4 id="clone-commands">Clone Commands</h4>
-<p>If a command's purpose is to copy information from one resource to another, it
-<strong>must</strong> be suffixed with <code>:clone</code> and <strong>must</strong> take a <code>from</code> and <code>to</code>
-argument:</p>
-<pre><code>  firebase example:clone &lt;fromProject&gt; &lt;toProject&gt;
-</code></pre>
-<p>To avoid confusion and accidental misuse, clone commands <strong>must</strong> explicitly
-require both arguments and <strong>must not</strong> rely on project selection to populate
-either.</p>
-<p>If a clone operation is destructive (replaces existing state), the command
-<strong>should</strong> prompt the user for confirmation before proceeding. If a prompt is
-added, the command <strong>must</strong> allow a <code>--force</code> flag to bypass the prompt.</p>
-<h3 id="deployment">Deployment</h3>
-<p>Behavior that takes local state (e.g. a rules file) and applies it to the live
-operation of a Firebase project <strong>must</strong> integrate with the <code>deploy</code> command.</p>
-<h4 id="scoped-deployments">Scoped Deployments</h4>
-<p>If a service has multiple deployable resources, it <strong>may</strong> allow specifying
-which resources are deployed through colon namespacing, for example:</p>
-<pre><code>  firebase deploy --only functions:func1,functions:func2,hosting:site3
-</code></pre>
-<p>Colon namespacing <strong>may</strong> be used to identify one of many like resources (as
-with functions above) or to identify specific resource type (e.g.
-<code>firestore:indexes</code> vs. <code>firestore:rules</code>).</p>
-<p>If the service integrates with <a href="https://firebase.google.com/docs/cli/targets">deploy targets</a>, the targets
-<strong>must</strong> be addressable via colon namespacing.</p>
-<!-- prettier-ignore-start -->
-<!-- prettier-ignore-end -->
+<h3 id="expected-generator-and-client-library-behavior">Expected Generator and Client Library Behavior</h3>
+<p>If the aforementioned requirements are met for a given field, client library
+generators <strong>must</strong> enable automatic population of said field in the
+generated client.</p>
+<p>The field <strong>must</strong> be automatically populated if and only if one of the
+following conditions holds:</p>
+<ul>
+<li>The field supports explicit presence, and has <strong>not</strong> been set by the user</li>
+<li>The field doesn't support explicit presence, and its value is the empty
+  string (i.e. the default value)</li>
+</ul>
+<p>If a field is specified in the <code>auto_populated_fields</code>, but does not meet the
+structural requirements, the client library generators <strong>must not</strong> enable
+automatic population for that field. Client library generators <strong>may</strong> emit an
+error during generation.</p>
+<p>Client libraries <strong>must</strong> reuse automatically populated values for retries of
+the same request. In other words, the automatically populated fields
+<strong>must not</strong> be regenerated for each RPC attempt with the same request message.</p>
   <footer>
   Except as otherwise noted, the content of this page is licensed under the
   <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons
