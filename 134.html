@@ -8,8 +8,8 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700|Google+Sans:400,500|Product+Sans:400&amp;lang=en" rel="stylesheet"></link>
     <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="//www.gstatic.com/glue/v22_1/glue.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=6916f158">
-    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=6916f158">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=2faa5610">
+    <link rel="stylesheet" type="text/css" media="print" href="/assets/css/print.css?v=2faa5610">
     <script type="text/javascript" src="//code.jquery.com/jquery-3.4.0.min.js"></script>
     <script type="text/javascript" src="//www.gstatic.com/glue/latest/glue-detect.min.js"></script>
     <script type="text/javascript">
@@ -18,7 +18,7 @@
         $('html').css('visibility', 'visible');
       });
     </script>
-    <script type="text/javascript" src="/assets/js/global.js?v=6916f158"></script>
+    <script type="text/javascript" src="/assets/js/global.js?v=2faa5610"></script>
     
 <script type="text/javascript" src="/assets/js/syntax.js"></script>
 
@@ -767,10 +767,9 @@ separator, <code>snake_case</code> is used.</p>
   called <code>update_mask</code>.<ul>
 <li>The fields used in the field mask correspond to the resource being updated
   (not the request message).</li>
-<li>The field <strong>may</strong> be required or optional. If it is required, it <strong>must</strong>
-  include the corresponding annotation. If optional, the service <strong>must</strong>
-  treat an omitted field mask as an implied field mask equivalent to all
-  fields that are populated (have a non-empty value).</li>
+<li>The field <strong>must</strong> be optional, and the service <strong>must</strong> treat an omitted
+  field mask as an implied field mask equivalent to all fields that are
+  populated (have a non-empty value).</li>
 <li>Update masks <strong>must</strong> support a special value <code>*</code>, meaning full replacement
   (the equivalent of <code>PUT</code>).</li>
 </ul>
@@ -816,6 +815,7 @@ operation (<a href="/151">AIP-151</a>) instead:</p>
 <div class="highlight language-proto"><pre><span></span><code><span class="k">rpc</span> <span class="n">UpdateBook</span><span class="p">(</span><span class="n">UpdateBookRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">google.longrunning.Operation</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.api.http</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">patch</span><span class="o">:</span> <span class="s">&quot;/v1/{book.name=publishers/*/books/*}&quot;</span>
+    <span class="n">body</span><span class="o">:</span> <span class="s">&quot;book&quot;</span>
   <span class="p">};</span>
   <span class="k">option</span> <span class="p">(</span><span class="n">google.longrunning.operation_info</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">response_type</span><span class="o">:</span> <span class="s">&quot;Book&quot;</span>
@@ -924,6 +924,7 @@ does not exist, the service <strong>must</strong> error with <code>NOT_FOUND</co
 <code>allow_missing</code> is set to <code>true</code>.</p>
 <h2 id="changelog">Changelog</h2>
 <ul>
+<li><strong>2024-03-14</strong>: Make <code>update_mask</code> optional field_behaviour guidance a <strong>must</strong>.</li>
 <li><strong>2023-08-26</strong>: Adding consistency requirement.</li>
 <li><strong>2023-07-17</strong>: Make <code>update_mask</code> name guidance a <strong>must</strong>.</li>
 <li><strong>2022-11-04</strong>: Aggregated error guidance to <a href="/193">AIP-193</a>.</li>
